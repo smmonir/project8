@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function index($id){
+    public function index(Request $request, $id=null){
+	   if ($id == null) {
+            return response("Please provide a profile id", 400);
+        } else {
+           
         $name = "Donal Trump";
         $age = "75";
       $data = [
@@ -17,17 +21,18 @@ class ProfileController extends Controller
 
        $name="access_token";
        $value="123-XYZ";
-       $expTime=60;
+       $expTime=1;
        $path="/";
        $domain=$_SERVER['SERVER_NAME'];
        $secure=false;
        $httpOnly=true;
 
-       $result = response("Cookie Set Success")->cookie(
+       $setCookie = response("Cookie Set Success")->cookie(
         $name,$value,$expTime,$path,$domain,$secure,$httpOnly
     );
 
-       return response()->json(['data'=>$data,'cookie_values'=>$result]);
-       //return compact("data", "result");
+       return response(['data'=>$data,'cookie_values'=>$setCookie], 200);
+     }
+      
     }
 }
